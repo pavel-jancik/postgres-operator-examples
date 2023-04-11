@@ -30,6 +30,6 @@ jobs:
         uses: helm/chart-releaser-action@v1.5.0
         with:
           charts_dir: "helm/"
-          charts_repo_url: https://pavel-jancik.github.io/helm-repo
+          config: cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
