@@ -15,7 +15,7 @@ spec:
   {{- end }}
   {{- if .Values.instances }}
   instances:
-{{ toYaml .Values.instances | indent 4 }}
+{{ tpl (.Values.instances | toYaml) . | indent 4 }}
   {{- else }}
   instances:
     - name: {{ default "instance1" .Values.instanceName | quote }}
@@ -42,7 +42,7 @@ spec:
       image: {{ .Values.imagePgBackRest | quote }}
       {{- end }}
       {{- if .Values.pgBackRestConfig }}
-{{ toYaml .Values.pgBackRestConfig | indent 6 }}
+{{ tpl (.Values.pgBackRestConfig | toYaml) . | indent 6 }}
       {{- else if .Values.multiBackupRepos }}
       configuration:
       - secret:
