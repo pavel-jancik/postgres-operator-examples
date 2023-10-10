@@ -301,8 +301,8 @@ podMonitor:
   # Additional labels ot be applied to PodMonitor CR
   additionalLabels: {}
   
-  interval: 15
-  scrapeTimeout: 15
+  interval: 15s
+  scrapeTimeout: 15s
   
 ############################
 # User Interface, pgAdmin4 #
