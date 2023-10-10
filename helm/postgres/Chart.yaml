@@ -3,5 +3,5 @@ name: postgrescluster
 description: A Helm chart for Kubernetes
 type: application
 # This version has to be increased via any change of the helm chart (e.g., comment in default values or templates)
-version: 5.4.3
+version: 5.4.4
 appVersion: 5.4.2

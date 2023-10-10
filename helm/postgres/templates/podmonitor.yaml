@@ -18,8 +18,8 @@ spec:
     matchNames:
     - {{ .Release.Namespace }}
   podMetricsEndpoints:
-  - interval: {{ .Values.podMonitor.interval }}
-    scrapeTimeout: {{ .Values.podMonitor.scrapeTimeout }}
+  - interval: {{ .Values.podMonitor.interval | quote }}
+    scrapeTimeout: {{ .Values.podMonitor.scrapeTimeout | quote }}
     relabelings:
     - sourceLabels: [__meta_kubernetes_namespace]
       action: replace
