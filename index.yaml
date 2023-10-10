@@ -26,6 +26,16 @@ entries:
   postgrescluster:
   - apiVersion: v2
     appVersion: 5.4.2
+    created: "2023-10-10T19:11:45.297698636Z"
+    description: A Helm chart for Kubernetes
+    digest: 82b9fb7d1793801bc2fdebe599a7d65fd2019235c49639f6f005e51aac16d6ca
+    name: postgrescluster
+    type: application
+    urls:
+    - https://github.com/pavel-jancik/postgres-operator-examples/releases/download/postgrescluster-5.4.5/postgrescluster-5.4.5.tgz
+    version: 5.4.5
+  - apiVersion: v2
+    appVersion: 5.4.2
     created: "2023-10-10T12:02:18.574024524Z"
     description: A Helm chart for Kubernetes
     digest: e392173a5904b4febcda42a7af503af815b488bc2b20e01f87f9decf1b3ef3a4
@@ -74,4 +84,4 @@ entries:
     urls:
     - https://github.com/pavel-jancik/postgres-operator-examples/releases/download/postgrescluster-5.3.1/postgrescluster-5.3.1.tgz
     version: 5.3.1
-generated: "2023-10-10T12:02:18.574042716Z"
+generated: "2023-10-10T19:11:45.297723436Z"
