@@ -1,0 +1,73 @@
+{{- if and .Values.monitoring .Values.podMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ default .Release.Name .Values.name }}
+{{- if .Values.podMonitor.namespace }}
+  namespace: {{ .Values.podMonitor.namespace | quote }}
+{{- else }}
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+  {{- if .Values.podMonitor.additionalLabels }}
+    {{- toYaml .Values.podMonitor.additionalLabels | nindent 4 }}
+  {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+  - interval: {{ .Values.podMonitor.interval }}
+    scrapeTimeout: {{ .Values.podMonitor.scrapeTimeout }}
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_namespace]
+      action: replace
+      targetLabel: kubernetes_namespace
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      targetLabel: pod
+    # Because of the https://github.com/prometheus-operator/prometheus-operator/issues/5003 we cannot use the version with empty separator from monitoring chart.
+    #- sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_cluster,__meta_kubernetes_pod_label_pg_cluster]
+    #  targetLabel: cluster
+    #  separator: ''
+    #  replacement: '$1'
+    - sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_cluster,__meta_kubernetes_pod_label_pg_cluster]
+      targetLabel: cluster
+      separator: ';'
+      regex: '(.*);(.*)'
+      action: replace
+      replacement: '$1$2'
+    - sourceLabels: [__meta_kubernetes_namespace,cluster]
+      targetLabel: pg_cluster
+      separator: ":"
+      replacement: '$1$2'
+    - sourceLabels: [__meta_kubernetes_pod_ip]
+      targetLabel: ip
+      replacement: '$1'
+    # Because of the https://github.com/prometheus-operator/prometheus-operator/issues/5003 we cannot use the version with empty separator from monitoring chart.
+    #- sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_instance,__meta_kubernetes_pod_label_deployment_name]
+    #  targetLabel: deployment
+    #  replacement: '$1'
+    #  separator: ''
+    - sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_instance,__meta_kubernetes_pod_label_deployment_name]
+      targetLabel: deployment
+      separator: ';'
+      regex: '(.*);(.*)'
+      action: replace
+      replacement: '$1$2'
+    # Because of the https://github.com/prometheus-operator/prometheus-operator/issues/5003 we cannot use the version with empty separator from monitoring chart.
+    #- sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_role,__meta_kubernetes_pod_label_role]
+    #  targetLabel: role
+    #  replacement: '$1'
+    #  separator: ''
+    - sourceLabels: [__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_role,__meta_kubernetes_pod_label_role]
+      targetLabel: role
+      separator: ';'
+      regex: '(.*);(.*)'
+      action: replace
+      replacement: '$1$2'
+    targetPort: 9187
+  selector:
+    matchLabels:
+      postgres-operator.crunchydata.com/cluster: {{ .Release.Name }}
+{{- end -}}

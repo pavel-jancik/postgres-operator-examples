@@ -290,6 +290,20 @@ postgresVersion: 15
 # Can be overridden by "pgBackRestConfig", if set.
 # backupsStorageClassName: "hostpath"
 
+# Configuration for prometheus
+podMonitor:
+  # Whether to create PodMonitor CR (to automatically configure Prometheus to scrape metrics from installed PG instance)
+  enabled: false
+
+  # The namespace where to create PodMonitor CR, defaults to the release namespace.
+  #namespace: "monitoring"
+  
+  # Additional labels ot be applied to PodMonitor CR
+  additionalLabels: {}
+  
+  interval: 15
+  scrapeTimeout: 15
+  
 ############################
 # User Interface, pgAdmin4 #
 ############################
